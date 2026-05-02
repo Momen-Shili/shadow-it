@@ -18,6 +18,32 @@ Shadow IT is a full-stack web application designed to help organizations identif
 - **User Management**: Role-based access control and authentication
 - **Responsive UI**: Works seamlessly on desktop and mobile devices
 
+## Screenshots
+
+### Login Page
+![Login](./images/login.png)
+
+### Main Dashboard
+![Main Dashboard](./images/Main%20Dashboard.png)
+
+### Dark Theme
+![Dark Theme](./images/dark-theme.png)
+
+### GitHub Integration
+![GitHub Page](./images/github-page.png)
+
+### Slack Integration
+![Slack Page](./images/slack-page.png)
+
+### Trello Integration
+![Trello Page](./images/trello-page.png)
+
+### Google Drive Integration
+![Drive Page](./images/drive-page.png)
+
+### User Profile
+![Profile Page](./images/profile-page.png)
+
 ## Tech Stack
 
 ### Backend
