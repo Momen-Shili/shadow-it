@@ -8,15 +8,14 @@ Shadow IT is a full-stack web application designed to help organizations identif
 
 ## Features
 
-- **OAuth Authentication**: Secure login via GitHub and Google
+- **OAuth Authentication**: Secure login 
 - **GitHub Integration**: Connect and manage GitHub repositories and accounts
-- **Google Integration**: Authenticate and access Google services
+- **Google Integration**: Authenticate and access Google Drive
 - **Slack Integration**: Connect Slack workspaces for communication insights
 - **Trello Integration**: Track Trello boards and card activities
 - **Admin Dashboard**: Comprehensive analytics and management interface
 - **Real-time Data Sync**: Keep your shadow IT inventory up-to-date
-- **User Management**: Role-based access control and authentication
-- **Responsive UI**: Works seamlessly on desktop and mobile devices
+- **User Management**: Upcoming
 
 ## Screenshots
 
@@ -124,7 +123,7 @@ shadow-it/
 
 4. Run database migrations:
    ```bash
-   npm run migrate
+   npm run db:migrate
    ```
 
 ### Frontend Setup
@@ -164,14 +163,6 @@ npm start
 ```
 The application will open on `http://localhost:3000`
 
-### Production Build
-
-**Frontend:**
-```bash
-cd frontend
-npm run build
-```
-This creates an optimized production build in the `build/` directory.
 
 ## API Endpoints
 
