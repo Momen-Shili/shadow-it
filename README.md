@@ -86,6 +86,9 @@ shadow-it/
 │
 └── README.md                   # This file
 ```
+### DB Schema
+![DB Schema](./images/db-schema.png)
+
 
 ## Installation
 
