@@ -48,7 +48,6 @@ Shadow IT is a full-stack web application designed to help organizations identif
 ### Backend
 - **Node.js** with Express.js
 - **SQLite/Database** (configured via migration system)
-- **OAuth 2.0** (GitHub, Google)
 - **REST API** architecture
 
 ### Frontend
