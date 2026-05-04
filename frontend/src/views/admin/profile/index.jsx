@@ -20,7 +20,7 @@ function AccountInfo({ user }) {
   const fields = [
     {
       icon: <MdPerson className="h-4 w-4" />,
-      label: "Full Name",
+      label: "Nom complet",
       value: user?.name ?? "—",
     },
     {
@@ -40,7 +40,7 @@ function AccountInfo({ user }) {
   return (
     <Card extra="w-full h-full p-5 flex flex-col gap-4">
       <h4 className="text-xl font-bold text-navy-700 dark:text-white">
-        Account Info
+        Infos Compte
       </h4>
       <div className="flex flex-col gap-3">
         {fields.map(({ icon, label, value }) => (
@@ -143,7 +143,7 @@ function ConnectedServicesDetails({ serviceStats, loadingStats }) {
       icon: <FaGithub className="h-5 w-5" />,
       color: "bg-gray-800",
       description: serviceStats.github
-        ? `${serviceStats.github.repos.toLocaleString()} repos · ${serviceStats.github.stars.toLocaleString()} stars`
+        ? `${serviceStats.github.repos.toLocaleString()} dépôt${serviceStats.github.repos !== 1 ? "s" : ""} · ${serviceStats.github.stars.toLocaleString()} étoile${serviceStats.github.stars !== 1 ? "s" : ""}`
         : null,
     },
     {
@@ -152,7 +152,7 @@ function ConnectedServicesDetails({ serviceStats, loadingStats }) {
       icon: <SiTrello className="h-5 w-5" />,
       color: "bg-blue-500",
       description: serviceStats.trello
-        ? `${serviceStats.trello.boards.toLocaleString()} board${serviceStats.trello.boards !== 1 ? "s" : ""}`
+        ? `${serviceStats.trello.boards.toLocaleString()} tableau${serviceStats.trello.boards !== 1 ? "x" : ""}`
         : null,
     },
     {
@@ -161,7 +161,7 @@ function ConnectedServicesDetails({ serviceStats, loadingStats }) {
       icon: <SiSlack className="h-5 w-5" />,
       color: "bg-[#E01E5A]",
       description: serviceStats.slack
-        ? `${serviceStats.slack.channels.toLocaleString()} channel${serviceStats.slack.channels !== 1 ? "s" : ""}`
+        ? `${serviceStats.slack.channels.toLocaleString()} ${serviceStats.slack.channels !== 1 ? "canaux" : "canal"}`
         : null,
     },
     {
@@ -170,7 +170,7 @@ function ConnectedServicesDetails({ serviceStats, loadingStats }) {
       icon: <SiGoogledrive className="h-5 w-5" />,
       color: "bg-brand-500",
       description: serviceStats.drive
-        ? `${serviceStats.drive.files.toLocaleString()} file${serviceStats.drive.files !== 1 ? "s" : ""} in Drive`
+        ? `${serviceStats.drive.files.toLocaleString()} fichier${serviceStats.drive.files !== 1 ? "s" : ""} en Drive`
         : null,
     },
   ];

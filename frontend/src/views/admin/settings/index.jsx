@@ -221,7 +221,7 @@ export default function SettingsPage() {
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-2xl font-bold text-navy-700 dark:text-white">
-            API Settings
+            Paramètres API
           </h2>
           <p className="mt-1 text-sm text-gray-500">
             Configurez vos clés d'accès pour chaque service intégré.

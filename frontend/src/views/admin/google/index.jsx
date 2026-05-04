@@ -23,18 +23,18 @@ import { useAuth } from "context/AuthContext";
 /* ── MIME type → icon + label ── */
 const MIME_MAP = {
   "application/vnd.google-apps.document":     { icon: MdDescription,    label: "Doc",          color: "text-blue-500" },
-  "application/vnd.google-apps.spreadsheet":  { icon: MdTableChart,     label: "Sheet",        color: "text-green-500" },
-  "application/vnd.google-apps.presentation": { icon: MdSlideshow,      label: "Slide",        color: "text-yellow-500" },
-  "application/vnd.google-apps.folder":       { icon: MdFolder,         label: "Folder",       color: "text-yellow-400" },
-  "application/vnd.google-apps.form":         { icon: MdDescription,    label: "Form",         color: "text-purple-500" },
+  "application/vnd.google-apps.spreadsheet":  { icon: MdTableChart,     label: "Feuille",      color: "text-green-500" },
+  "application/vnd.google-apps.presentation": { icon: MdSlideshow,      label: "Diapo",        color: "text-yellow-500" },
+  "application/vnd.google-apps.folder":       { icon: MdFolder,         label: "Dossier",      color: "text-yellow-400" },
+  "application/vnd.google-apps.form":         { icon: MdDescription,    label: "Formulaire",   color: "text-purple-500" },
   "application/pdf":                          { icon: MdPictureAsPdf,   label: "PDF",          color: "text-red-500" },
   "image/jpeg":                               { icon: MdImage,          label: "JPEG",         color: "text-pink-400" },
   "image/png":                                { icon: MdImage,          label: "PNG",          color: "text-pink-400" },
   "image/gif":                                { icon: MdImage,          label: "GIF",          color: "text-pink-400" },
   "image/svg+xml":                            { icon: MdImage,          label: "SVG",          color: "text-pink-400" },
-  "video/mp4":                                { icon: MdVideoFile,      label: "Video",        color: "text-purple-400" },
+  "video/mp4":                                { icon: MdVideoFile,      label: "Vidéo",        color: "text-purple-400" },
   "audio/mpeg":                               { icon: MdAudioFile,      label: "Audio",        color: "text-indigo-400" },
-  "text/plain":                               { icon: MdDescription,    label: "Text",         color: "text-gray-500" },
+  "text/plain":                               { icon: MdDescription,    label: "Texte",        color: "text-gray-500" },
   "text/csv":                                 { icon: MdTableChart,     label: "CSV",          color: "text-green-400" },
   "application/json":                         { icon: MdCode,           label: "JSON",         color: "text-orange-400" },
   "application/zip":                          { icon: MdArchive,        label: "ZIP",          color: "text-gray-500" },
@@ -43,10 +43,10 @@ const MIME_MAP = {
 function getMimeInfo(mimeType) {
   if (MIME_MAP[mimeType]) return MIME_MAP[mimeType];
   if (mimeType?.startsWith("image/"))  return { icon: MdImage,           label: "Image", color: "text-pink-400" };
-  if (mimeType?.startsWith("video/"))  return { icon: MdVideoFile,       label: "Video", color: "text-purple-400" };
+  if (mimeType?.startsWith("video/"))  return { icon: MdVideoFile,       label: "Vidéo", color: "text-purple-400" };
   if (mimeType?.startsWith("audio/"))  return { icon: MdAudioFile,       label: "Audio", color: "text-indigo-400" };
-  if (mimeType?.startsWith("text/"))   return { icon: MdDescription,     label: "Text",  color: "text-gray-500" };
-  return { icon: MdInsertDriveFile, label: "File", color: "text-gray-400" };
+  if (mimeType?.startsWith("text/"))   return { icon: MdDescription,     label: "Texte",  color: "text-gray-500" };
+  return { icon: MdInsertDriveFile, label: "Fichier", color: "text-gray-400" };
 }
 
 /* ── Helpers ── */
@@ -79,7 +79,7 @@ function QuotaBar({ quota }) {
     <Card extra="p-5 flex flex-col gap-3">
       <div className="flex items-center justify-between">
         <h4 className="text-sm font-bold text-navy-700 dark:text-white">
-          Storage Quota
+          Quota de Stockage
         </h4>
         <span className="text-sm font-semibold text-navy-700 dark:text-white">
           {pct !== null ? `${pct}%` : "—"}
@@ -95,24 +95,24 @@ function QuotaBar({ quota }) {
       </div>
 
       <div className="flex items-center justify-between text-xs text-gray-500">
-        <span>{formatBytes(used)} used</span>
+        <span>{formatBytes(used)} utilisé</span>
         {limit ? (
-          <span>{formatBytes(limit)} total</span>
+          <span>{formatBytes(limit)} au total</span>
         ) : (
-          <span>Unlimited</span>
+          <span>Illimité</span>
         )}
       </div>
 
       {/* Breakdown */}
       <div className="grid grid-cols-2 gap-2 pt-1">
         <div className="rounded-xl bg-lightPrimary px-3 py-2 dark:bg-navy-700">
-          <p className="text-[11px] text-gray-500">In Drive</p>
+          <p className="text-[11px] text-gray-500">En Drive</p>
           <p className="text-sm font-bold text-navy-700 dark:text-white">
             {formatBytes(quota.usage_in_drive)}
           </p>
         </div>
         <div className="rounded-xl bg-lightPrimary px-3 py-2 dark:bg-navy-700">
-          <p className="text-[11px] text-gray-500">In Trash</p>
+          <p className="text-[11px] text-gray-500">À la Corbeille</p>
           <p className="text-sm font-bold text-navy-700 dark:text-white">
             {formatBytes(quota.usage_in_drive_trash)}
           </p>
@@ -215,10 +215,10 @@ function ConnectPrompt({ onConnect, connecting }) {
       </div>
       <div className="flex flex-col items-center gap-1 text-center">
         <h3 className="text-lg font-bold text-navy-700 dark:text-white">
-          Google Drive not connected
+          Google Drive non connecté
         </h3>
         <p className="max-w-xs text-sm text-gray-500">
-          Authorize read-only access to your Drive to view files and storage usage.
+          Autorisez l'accès en lecture seule à votre Drive pour voir les fichiers et l'utilisation du stockage.
         </p>
       </div>
       <button
@@ -227,7 +227,7 @@ function ConnectPrompt({ onConnect, connecting }) {
         className="flex items-center gap-2 rounded-xl bg-brand-500 px-6 py-3 text-sm font-semibold text-white transition hover:bg-brand-600 active:bg-brand-700 disabled:opacity-60"
       >
         <SiGoogledrive className="h-4 w-4" />
-        {connecting ? "Redirecting…" : "Connect Google Drive"}
+        {connecting ? "Redirection…" : "Connecter Google Drive"}
       </button>
     </Card>
   );
@@ -314,9 +314,9 @@ export default function GoogleDrivePage() {
               Google Drive
             </h3>
             <p className="text-sm text-gray-500">
-              {connected === null && "Checking connection…"}
-              {connected === true && !loadingFiles && `${files.length} recent file${files.length !== 1 ? "s" : ""}`}
-              {connected === false && "Not connected"}
+              {connected === null && "Vérification de la connexion…"}
+              {connected === true && !loadingFiles && `${files.length} fichier${files.length !== 1 ? "s" : ""} récent${files.length !== 1 ? "s" : ""}`}
+              {connected === false && "Non connecté"}
             </p>
           </div>
         </div>
@@ -329,7 +329,7 @@ export default function GoogleDrivePage() {
             className="flex items-center gap-1.5 rounded-xl border border-gray-200 px-4 py-2 text-xs font-semibold text-gray-600 transition hover:bg-lightPrimary dark:border-white/10 dark:text-gray-400 dark:hover:bg-navy-700"
           >
             <SiGoogledrive className="h-3.5 w-3.5" />
-            {connecting ? "Redirecting…" : "Re-authorize"}
+            {connecting ? "Redirection…" : "Réautoriser"}
           </button>
         )}
       </Card>
@@ -337,7 +337,7 @@ export default function GoogleDrivePage() {
       {/* ── Just-connected banner ── */}
       {justConnected && (
         <div className="rounded-xl bg-green-50 px-4 py-3 text-sm font-medium text-green-700 dark:bg-green-900/20 dark:text-green-400">
-          Google Drive connected successfully!
+          Google Drive connecté avec succès !
         </div>
       )}
 
@@ -362,7 +362,7 @@ export default function GoogleDrivePage() {
           <Card extra="overflow-hidden">
             <div className="flex items-center justify-between px-5 py-4">
               <h4 className="text-lg font-bold text-navy-700 dark:text-white">
-                Recent Files
+                Fichiers Récents
                 {files.length > 0 && (
                   <span className="ml-2 text-sm font-medium text-gray-400">
                     ({files.length})
@@ -386,7 +386,7 @@ export default function GoogleDrivePage() {
             ) : files.length === 0 ? (
               <div className="flex flex-col items-center gap-3 py-12 text-gray-300 dark:text-gray-600">
                 <SiGoogledrive className="h-10 w-10" />
-                <p className="text-sm">No files found in your Drive.</p>
+                <p className="text-sm">Aucun fichier trouvé dans votre Drive.</p>
               </div>
             ) : (
               <div className="overflow-x-auto">
@@ -395,16 +395,16 @@ export default function GoogleDrivePage() {
                     <tr className="border-b border-gray-100 dark:border-white/5">
                       <th className="py-3 pl-5 pr-3 text-left" />
                       <th className="py-3 pr-4 text-left text-xs font-semibold uppercase tracking-wide text-gray-400">
-                        Name
+                        Nom
                       </th>
                       <th className="hidden py-3 pr-4 text-left text-xs font-semibold uppercase tracking-wide text-gray-400 md:table-cell">
                         Type
                       </th>
                       <th className="hidden py-3 pr-4 text-right text-xs font-semibold uppercase tracking-wide text-gray-400 sm:table-cell">
-                        Size
+                        Taille
                       </th>
                       <th className="py-3 pr-5 text-right text-xs font-semibold uppercase tracking-wide text-gray-400">
-                        Modified
+                        Modifié
                       </th>
                     </tr>
                   </thead>

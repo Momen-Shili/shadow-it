@@ -9,10 +9,10 @@ const General = () => {
       {/* Header */}
       <div className="mb-8 mt-2 w-full">
         <h4 className="px-2 text-xl font-bold text-navy-700 dark:text-white">
-          General Information
+          Informations Générales
         </h4>
         <p className="mt-2 px-2 text-base text-gray-600">
-          Account details for your NexaBoard workspace.
+          Détails du compte pour votre espace de travail NexaBoard.
         </p>
       </div>
 
@@ -26,7 +26,7 @@ const General = () => {
         </div>
 
         <div className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-          <p className="text-sm text-gray-600">Full Name</p>
+          <p className="text-sm text-gray-600">Nom complet</p>
           <p className="text-base font-medium text-navy-700 dark:text-white">
             {user?.name ?? "—"}
           </p>
