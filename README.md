@@ -28,8 +28,6 @@ Les administrateurs (chefs d'équipe) peuvent superviser tous les membres, appro
 - **Fil d'Activité Unifié** — Événements mélangés de tous les services triés par date
 - **Statut des Services** — Indicateur temps réel connecté/déconnecté par service
 - **Panneau Admin** — Gestion des membres, approbation/rejet, statistiques équipe, journaux d'activité
-- **Interface entièrement en français** — Toute l'interface utilisateur traduite en français
-- **Branding NexaBoard** — Personnalisation complète du template Horizon UI
 
 ---
 
