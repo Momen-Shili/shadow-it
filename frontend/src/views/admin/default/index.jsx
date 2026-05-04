@@ -19,11 +19,11 @@ function timeAgo(dateStr) {
   if (!dateStr) return "—";
   const diff = Date.now() - new Date(dateStr).getTime();
   const days = Math.floor(diff / 86400000);
-  if (days === 0) return "today";
-  if (days === 1) return "yesterday";
-  if (days < 30) return `${days}d ago`;
+  if (days === 0) return "aujourd'hui";
+  if (days === 1) return "hier";
+  if (days < 30) return `il y a ${days}j`;
   const months = Math.floor(days / 30);
-  return months < 12 ? `${months}mo ago` : `${Math.floor(months / 12)}y ago`;
+  return months < 12 ? `il y a ${months}mois` : `il y a ${Math.floor(months / 12)}an`;
 }
 
 function formatDate(dateStr) {
@@ -59,7 +59,7 @@ function TopReposChart({ repos, loading }) {
   );
   const stars = repos.map((r) => r.stargazers_count ?? 0);
 
-  const chartData = [{ name: "Stars", data: stars, color: "#4318FF" }];
+  const chartData = [{ name: "Étoiles", data: stars, color: "#4318FF" }];
   const chartOptions = {
     chart: { toolbar: { show: false }, parentHeightOffset: 0 },
     tooltip: { style: { fontSize: "12px" }, theme: "dark" },
@@ -88,7 +88,7 @@ function TopReposChart({ repos, loading }) {
     <Card extra="flex flex-col bg-white w-full rounded-3xl py-6 px-2 text-center">
       <div className="mb-4 flex items-center justify-between px-6">
         <h2 className="text-lg font-bold text-navy-700 dark:text-white">
-          Top 5 Repos by Stars
+          Top 5 Dépôts par Étoiles
         </h2>
         <FaGithub className="h-5 w-5 text-gray-400" />
       </div>
@@ -106,7 +106,7 @@ function TopReposChart({ repos, loading }) {
         ) : repos.length === 0 ? (
           <div className="flex h-full flex-col items-center justify-center gap-2 text-gray-300">
             <FaGithub className="h-8 w-8" />
-            <p className="text-sm">No repos found</p>
+            <p className="text-sm">Aucun dépôt trouvé</p>
           </div>
         ) : (
           <BarChart chartData={chartData} chartOptions={chartOptions} />
@@ -122,7 +122,7 @@ function RecentActivityFeed({ repos, loading }) {
     <Card extra="!p-[20px]">
       <div className="mb-4 flex items-center justify-between">
         <h2 className="text-lg font-bold text-navy-700 dark:text-white">
-          Recent GitHub Activity
+          Activité GitHub Récente
         </h2>
         <FaGithub className="h-5 w-5 text-gray-400" />
       </div>
@@ -131,7 +131,7 @@ function RecentActivityFeed({ repos, loading }) {
       ) : repos.length === 0 ? (
         <div className="flex flex-col items-center gap-2 py-8 text-gray-300">
           <FaGithub className="h-8 w-8" />
-          <p className="text-sm">No recent activity</p>
+          <p className="text-sm">Aucune activité récente</p>
         </div>
       ) : (
         <div className="flex flex-col">
@@ -164,7 +164,7 @@ function RecentActivityFeed({ repos, loading }) {
                       </span>
                     )}
                     <span>·</span>
-                    <span>Updated {timeAgo(repo.updated_at)}</span>
+                    <span>Mis à jour {timeAgo(repo.updated_at)}</span>
                     {repo.stargazers_count > 0 && (
                       <>
                         <span>·</span>
@@ -217,17 +217,17 @@ function UnifiedActivityFeed({ events, loading }) {
     <Card extra="p-5">
       <div className="mb-4 flex items-center justify-between">
         <h2 className="text-lg font-bold text-navy-700 dark:text-white">
-          Activity Feed
+          Fil d'Activité
         </h2>
         <span className="rounded-full bg-lightPrimary px-3 py-1 text-xs font-semibold text-navy-700 dark:bg-navy-700 dark:text-white">
-          All Services
+          Tous les Services
         </span>
       </div>
       {loading ? (
         <SkeletonRows count={8} />
       ) : events.length === 0 ? (
         <p className="py-8 text-center text-sm text-gray-400">
-          No activity to display.
+          Aucune activité à afficher.
         </p>
       ) : (
         <div className="flex flex-col divide-y divide-gray-100 dark:divide-white/5">
@@ -287,7 +287,7 @@ function ServiceHealth({ health, loading }) {
   return (
     <Card extra="p-5 flex flex-col gap-4">
       <h2 className="text-lg font-bold text-navy-700 dark:text-white">
-        Service Health
+        Statut des Services
       </h2>
       <div className="flex flex-col gap-3">
         {services.map(({ key, label, icon }) => {
@@ -305,11 +305,11 @@ function ServiceHealth({ health, loading }) {
                 <div className="h-2.5 w-14 animate-pulse rounded-full bg-gray-300 dark:bg-navy-600" />
               ) : status === "ok" ? (
                 <span className="flex items-center gap-1.5 text-xs font-semibold text-green-500">
-                  <MdCircle className="h-2.5 w-2.5" /> Connected
+                  <MdCircle className="h-2.5 w-2.5" /> Connecté
                 </span>
               ) : (
                 <span className="flex items-center gap-1.5 text-xs font-semibold text-red-400">
-                  <MdCircle className="h-2.5 w-2.5" /> Disconnected
+                  <MdCircle className="h-2.5 w-2.5" /> Déconnecté
                 </span>
               )}
             </div>
@@ -344,7 +344,7 @@ function RecentCommits() {
       <div className="mb-4 flex items-center justify-between">
         <div>
           <h2 className="text-lg font-bold text-navy-700 dark:text-white">
-            Recent Commits
+            Commits Récents
           </h2>
           {repoName && (
             <p className="mt-0.5 text-xs text-gray-400">{repoName}</p>
@@ -358,7 +358,7 @@ function RecentCommits() {
       ) : commits.length === 0 ? (
         <div className="flex flex-col items-center gap-2 py-8 text-gray-300">
           <FaGithub className="h-8 w-8" />
-          <p className="text-sm">No commits found</p>
+          <p className="text-sm">Aucun commit trouvé</p>
         </div>
       ) : (
         <div className="flex flex-col divide-y divide-gray-100 dark:divide-white/5">
@@ -433,7 +433,6 @@ function TrelloOverview() {
                 ? cardsRes.value.data.data ?? []
                 : [];
 
-            // Count cards per list
             const countByList = {};
             for (const card of cards) {
               countByList[card.idList] = (countByList[card.idList] || 0) + 1;
@@ -467,7 +466,7 @@ function TrelloOverview() {
     <Card extra="p-5">
       <div className="mb-4 flex items-center justify-between">
         <h2 className="text-lg font-bold text-navy-700 dark:text-white">
-          Trello Overview
+          Aperçu Trello
         </h2>
         <SiTrello className="h-5 w-5 text-blue-500" />
       </div>
@@ -488,7 +487,7 @@ function TrelloOverview() {
       ) : boards.length === 0 ? (
         <div className="flex flex-col items-center gap-2 py-8 text-gray-300">
           <SiTrello className="h-8 w-8" />
-          <p className="text-sm">No boards found</p>
+          <p className="text-sm">Aucun tableau trouvé</p>
         </div>
       ) : (
         <div className="flex flex-col divide-y divide-gray-100 dark:divide-white/5">
@@ -507,7 +506,7 @@ function TrelloOverview() {
                   </a>
                 </div>
                 <span className="shrink-0 text-xs text-gray-400">
-                  {board.totalCards} card{board.totalCards !== 1 ? "s" : ""}
+                  {board.totalCards} carte{board.totalCards !== 1 ? "s" : ""}
                 </span>
               </div>
               <div className="flex flex-wrap gap-1.5">
@@ -522,7 +521,7 @@ function TrelloOverview() {
                   </span>
                 ))}
                 {board.lists.length === 0 && (
-                  <span className="text-xs text-gray-400 italic">No lists</span>
+                  <span className="text-xs text-gray-400 italic">Aucune liste</span>
                 )}
               </div>
             </div>
@@ -556,10 +555,10 @@ function SlackRecentMessages() {
   }, []);
 
   function formatUserId(userId) {
-    if (!userId) return "Unknown";
+    if (!userId) return "Inconnu";
     if (userId.startsWith("B")) return "Bot";
     if (userId.startsWith("U") && userId.length > 4)
-      return `Member ·${userId.slice(-4)}`;
+      return `Membre ·${userId.slice(-4)}`;
     return userId;
   }
 
@@ -568,7 +567,7 @@ function SlackRecentMessages() {
       <div className="mb-4 flex items-center justify-between">
         <div>
           <h2 className="text-lg font-bold text-navy-700 dark:text-white">
-            Slack Recent Messages
+            Messages Slack Récents
           </h2>
           {channelName && (
             <p className="mt-0.5 flex items-center gap-1 text-xs text-gray-400">
@@ -585,7 +584,7 @@ function SlackRecentMessages() {
       ) : messages.length === 0 ? (
         <div className="flex flex-col items-center gap-2 py-8 text-gray-300">
           <SiSlack className="h-8 w-8" />
-          <p className="text-sm">No messages found</p>
+          <p className="text-sm">Aucun message trouvé</p>
         </div>
       ) : (
         <div className="flex flex-col divide-y divide-gray-100 dark:divide-white/5">
@@ -645,10 +644,10 @@ const MIME_BADGE = {
 };
 
 const MIME_LABEL = {
-  "application/vnd.google-apps.document": "Doc",
-  "application/vnd.google-apps.spreadsheet": "Sheet",
-  "application/vnd.google-apps.presentation": "Slide",
-  "application/vnd.google-apps.folder": "Folder",
+  "application/vnd.google-apps.document": "Document",
+  "application/vnd.google-apps.spreadsheet": "Feuille",
+  "application/vnd.google-apps.presentation": "Présentation",
+  "application/vnd.google-apps.folder": "Dossier",
   "application/pdf": "PDF",
 };
 
@@ -658,8 +657,8 @@ function mimeInfo(mimeType) {
     (mimeType?.startsWith("image/")
       ? "Image"
       : mimeType?.startsWith("video/")
-      ? "Video"
-      : "File");
+      ? "Vidéo"
+      : "Fichier");
   const badge =
     MIME_BADGE[mimeType] ??
     "bg-gray-100 text-gray-600 dark:bg-navy-700 dark:text-gray-300";
@@ -682,7 +681,7 @@ function DriveRecentFiles() {
     <Card extra="p-5">
       <div className="mb-4 flex items-center justify-between">
         <h2 className="text-lg font-bold text-navy-700 dark:text-white">
-          Drive Recent Files
+          Fichiers Drive Récents
         </h2>
         <SiGoogledrive className="h-5 w-5 text-brand-500" />
       </div>
@@ -692,7 +691,7 @@ function DriveRecentFiles() {
       ) : files.length === 0 ? (
         <div className="flex flex-col items-center gap-2 py-8 text-gray-300">
           <SiGoogledrive className="h-8 w-8" />
-          <p className="text-sm">No files found</p>
+          <p className="text-sm">Aucun fichier trouvé</p>
         </div>
       ) : (
         <div className="flex flex-col divide-y divide-gray-100 dark:divide-white/5">
@@ -807,14 +806,14 @@ const Dashboard = () => {
         repos
           .slice(0, 5)
           .forEach((r) =>
-            events.push({ source: "github", title: `Repo updated: ${r.name}`, time: timeAgo(r.updated_at), url: r.html_url, ts: new Date(r.updated_at) })
+            events.push({ source: "github", title: `Dépôt mis à jour : ${r.name}`, time: timeAgo(r.updated_at), url: r.html_url, ts: new Date(r.updated_at) })
           );
       }
       if (newHealth.trello) {
         boardList
           .slice(0, 3)
           .forEach((b) =>
-            events.push({ source: "trello", title: `Board: ${b.name}`, time: timeAgo(b.last_activity), url: b.url, ts: new Date(b.last_activity ?? 0) })
+            events.push({ source: "trello", title: `Tableau : ${b.name}`, time: timeAgo(b.last_activity), url: b.url, ts: new Date(b.last_activity ?? 0) })
           );
       }
       if (newHealth.slack) {
@@ -822,7 +821,7 @@ const Dashboard = () => {
         channels
           .slice(0, 3)
           .forEach((c) =>
-            events.push({ source: "slack", title: `#${c.name} — ${c.member_count ?? 0} members`, time: "active", ts: new Date(0) })
+            events.push({ source: "slack", title: `#${c.name} — ${c.member_count ?? 0} membres`, time: "actif", ts: new Date(0) })
           );
       }
       if (newHealth.drive) {
@@ -862,12 +861,12 @@ const Dashboard = () => {
     <div>
       {/* ── KPI Widgets ── */}
       <div className="mt-3 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-3 3xl:grid-cols-6">
-        <Widget icon={<FaGithub className="h-6 w-6" />} title="GitHub Repos" subtitle={fmt(stats.githubRepos)} />
-        <Widget icon={<FaStar className="h-6 w-6" />} title="Total Stars" subtitle={fmt(stats.totalStars)} />
-        <Widget icon={<SiTrello className="h-6 w-6" />} title="Trello Cards" subtitle={fmt(stats.trelloCards)} />
-        <Widget icon={<SiSlack className="h-6 w-6" />} title="Slack Channels" subtitle={fmt(stats.slackChannels)} />
-        <Widget icon={<SiGoogledrive className="h-6 w-6" />} title="Drive Files" subtitle={fmt(stats.driveFiles)} />
-        <Widget icon={<MdLink className="h-7 w-7" />} title="Services Connected" subtitle="4" />
+        <Widget icon={<FaGithub className="h-6 w-6" />} title="Dépôts GitHub" subtitle={fmt(stats.githubRepos)} />
+        <Widget icon={<FaStar className="h-6 w-6" />} title="Total Étoiles" subtitle={fmt(stats.totalStars)} />
+        <Widget icon={<SiTrello className="h-6 w-6" />} title="Cartes Trello" subtitle={fmt(stats.trelloCards)} />
+        <Widget icon={<SiSlack className="h-6 w-6" />} title="Canaux Slack" subtitle={fmt(stats.slackChannels)} />
+        <Widget icon={<SiGoogledrive className="h-6 w-6" />} title="Fichiers Drive" subtitle={fmt(stats.driveFiles)} />
+        <Widget icon={<MdLink className="h-7 w-7" />} title="Services Connectés" subtitle="4" />
       </div>
 
       {/* ── Activity Feed + Service Health ── */}

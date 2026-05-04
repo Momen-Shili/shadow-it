@@ -49,12 +49,12 @@ const langHex = (lang) => LANG_HEX[lang] ?? "#9CA3AF";
 function timeAgo(dateStr) {
   const diff = Date.now() - new Date(dateStr).getTime();
   const days = Math.floor(diff / 86400000);
-  if (days === 0) return "today";
-  if (days === 1) return "yesterday";
-  if (days < 30) return `${days}d ago`;
+  if (days === 0) return "aujourd'hui";
+  if (days === 1) return "hier";
+  if (days < 30) return `il y a ${days}j`;
   const months = Math.floor(days / 30);
-  if (months < 12) return `${months}mo ago`;
-  return `${Math.floor(months / 12)}y ago`;
+  if (months < 12) return `il y a ${months}mois`;
+  return `il y a ${Math.floor(months / 12)}an`;
 }
 
 function StatBadge({ icon, label, value }) {
@@ -84,7 +84,7 @@ function RepoCard({ repo }) {
         </a>
         {repo.private && (
           <span className="shrink-0 rounded-full border border-gray-200 px-2 py-0.5 text-[10px] font-medium text-gray-500 dark:border-white/10">
-            Private
+            Privé
           </span>
         )}
       </div>
@@ -147,7 +147,7 @@ function LanguagePieChart({ repos }) {
     tooltip: {
       y: {
         formatter: (val) =>
-          `${val} repo${val !== 1 ? "s" : ""}`,
+          `${val} dépôt${val !== 1 ? "s" : ""}`,
       },
     },
     stroke: { width: 0 },
@@ -157,10 +157,10 @@ function LanguagePieChart({ repos }) {
   return (
     <Card extra="p-5">
       <h4 className="mb-1 text-base font-bold text-navy-700 dark:text-white">
-        Languages
+        Langages
       </h4>
       <p className="mb-4 text-xs text-gray-400">
-        Distribution across {repos.length} repositories
+        Répartition sur {repos.length} dépôts
       </p>
       <div style={{ height: "220px" }}>
         <PieChart series={series} options={options} />
@@ -183,7 +183,7 @@ export default function GitHubPage() {
       .get("/github/profile")
       .then(({ data }) => setProfile(data.data))
       .catch((err) =>
-        setErrorProfile(err.response?.data?.error ?? "Failed to load profile")
+        setErrorProfile(err.response?.data?.error ?? "Impossible de charger le profil")
       )
       .finally(() => setLoadingProfile(false));
 
@@ -191,7 +191,7 @@ export default function GitHubPage() {
       .get("/github/repos")
       .then(({ data }) => setRepos(data.data))
       .catch((err) =>
-        setErrorRepos(err.response?.data?.error ?? "Failed to load repos")
+        setErrorRepos(err.response?.data?.error ?? "Impossible de charger les dépôts")
       )
       .finally(() => setLoadingRepos(false));
   }, []);
@@ -233,7 +233,7 @@ export default function GitHubPage() {
                 rel="noreferrer"
                 className="mt-1 text-xs font-medium text-brand-500 hover:underline"
               >
-                View on GitHub →
+                Voir sur GitHub →
               </a>
             </div>
           </div>
@@ -245,23 +245,23 @@ export default function GitHubPage() {
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
           <StatBadge
             icon={<MdOutlineBook className="h-7 w-7" />}
-            label="Public Repos"
+            label="Dépôts Publics"
             value={profile.public_repos}
           />
           <StatBadge
             icon={<FaUsers className="h-6 w-6" />}
-            label="Followers"
+            label="Abonnés"
             value={profile.followers}
           />
           <StatBadge
             icon={<FaUserFriends className="h-6 w-6" />}
-            label="Following"
+            label="Abonnements"
             value={profile.following}
           />
         </div>
       )}
 
-      {/* ── Language chart + Repos side by side (when repos loaded) ── */}
+      {/* ── Language chart + Repos side by side ── */}
       {!loadingRepos && !errorRepos && repos.length > 0 && (
         <div className="grid grid-cols-1 gap-5 xl:grid-cols-3">
           <div className="xl:col-span-1">
@@ -272,11 +272,11 @@ export default function GitHubPage() {
           <div className="xl:col-span-2">
             <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <h4 className="text-xl font-bold text-navy-700 dark:text-white">
-                Repositories
+                Dépôts
                 <span className="ml-2 text-sm font-medium text-gray-400">
                   ({filteredRepos.length}
                   {search && repos.length !== filteredRepos.length
-                    ? ` of ${repos.length}`
+                    ? ` sur ${repos.length}`
                     : ""}
                   )
                 </span>
@@ -285,7 +285,7 @@ export default function GitHubPage() {
                 <MdSearch className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
                 <input
                   type="text"
-                  placeholder="Search repositories…"
+                  placeholder="Rechercher un dépôt…"
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   className="h-9 w-full rounded-xl border border-gray-200 bg-white/0 pl-9 pr-3 text-sm outline-none placeholder:text-gray-400 focus:border-brand-500 dark:border-white/10 dark:text-white dark:placeholder:text-gray-500"
@@ -297,7 +297,9 @@ export default function GitHubPage() {
               <Card extra="p-10 flex flex-col items-center gap-3 text-gray-400">
                 <FaGithub className="h-10 w-10" />
                 <p className="text-sm">
-                  {search ? "No repositories match your search." : "No repositories found."}
+                  {search
+                    ? "Aucun dépôt ne correspond à votre recherche."
+                    : "Aucun dépôt trouvé."}
                 </p>
               </Card>
             ) : (

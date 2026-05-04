@@ -1,26 +1,29 @@
 import React from "react";
 
 // Admin Imports
-import MainDashboard from "views/admin/default";
-import Profile from "views/admin/profile";
-import GitHubPage from "views/admin/github";
-import TrelloPage from "views/admin/trello";
-import SlackPage from "views/admin/slack";
+import MainDashboard  from "views/admin/default";
+import Profile        from "views/admin/profile";
+import GitHubPage     from "views/admin/github";
+import TrelloPage     from "views/admin/trello";
+import SlackPage      from "views/admin/slack";
 import GoogleDrivePage from "views/admin/google";
-import NotFound from "views/admin/404";
+import SettingsPage   from "views/admin/settings";
+import AdminPanel     from "views/admin/admin-panel";
+import NotFound       from "views/admin/404";
 
 // Auth Imports
-import SignIn from "views/auth/SignIn";
+import SignIn  from "views/auth/SignIn";
+import SignUp  from "views/auth/SignUp";
 
 // Icon Imports
-import { MdHome, MdPerson, MdLock } from "react-icons/md";
+import { MdHome, MdPerson, MdLock, MdSettings, MdAdminPanelSettings } from "react-icons/md";
 import { FaGithub } from "react-icons/fa";
 import { SiTrello, SiSlack, SiGoogledrive } from "react-icons/si";
 
 const routes = [
-  // ── Main section (visible in sidebar) ──────────────────────────
+  // ── Main section ───────────────────────────────────────────────
   {
-    name: "Main Dashboard",
+    name: "Tableau de bord",
     layout: "/admin",
     path: "default",
     icon: <MdHome className="h-6 w-6" />,
@@ -59,26 +62,50 @@ const routes = [
     component: <GoogleDrivePage />,
     section: "main",
   },
-  // ── Settings section (visible in sidebar) ──────────────────────
+  // ── Settings section ───────────────────────────────────────────
   {
-    name: "Profile",
+    name: "Profil",
     layout: "/admin",
     path: "profile",
     icon: <MdPerson className="h-5 w-5" />,
     component: <Profile />,
     section: "settings",
   },
+  {
+    name: "Paramètres API",
+    layout: "/admin",
+    path: "settings",
+    icon: <MdSettings className="h-5 w-5" />,
+    component: <SettingsPage />,
+    section: "settings",
+  },
+  // ── Admin section (visible only for admin role) ────────────────
+  {
+    name: "Panneau d'administration",
+    layout: "/admin",
+    path: "admin-panel",
+    icon: <MdAdminPanelSettings className="h-5 w-5" />,
+    component: <AdminPanel />,
+    section: "admin",
+  },
   // ── Auth (not in sidebar) ──────────────────────────────────────
   {
-    name: "Sign In",
+    name: "Se connecter",
     layout: "/auth",
     path: "sign-in",
     icon: <MdLock className="h-6 w-6" />,
     component: <SignIn />,
   },
-  // ── 404 (not in sidebar, catch-all) ───────────────────────────
   {
-    name: "Not Found",
+    name: "Créer un compte",
+    layout: "/auth",
+    path: "sign-up",
+    icon: <MdLock className="h-6 w-6" />,
+    component: <SignUp />,
+  },
+  // ── Catch-all 404 ─────────────────────────────────────────────
+  {
+    name: "Page introuvable",
     layout: "/admin",
     path: "404",
     component: <NotFound />,

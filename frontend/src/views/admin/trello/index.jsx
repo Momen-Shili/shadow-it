@@ -86,8 +86,8 @@ function BoardCard({ board, index, onClick }) {
           )}
           <p className="mt-1 text-[11px] text-gray-400">
             {board.last_activity
-              ? `Active ${formatDate(board.last_activity)}`
-              : "No recent activity"}
+              ? `Actif depuis le ${formatDate(board.last_activity)}`
+              : "Aucune activité récente"}
           </p>
         </div>
       </Card>
@@ -150,7 +150,7 @@ function ListColumn({ list, cards }) {
       {/* Cards */}
       <div className="flex flex-col gap-2">
         {cards.length === 0 ? (
-          <p className="px-2 text-xs italic text-gray-400">No cards</p>
+          <p className="px-2 text-xs italic text-gray-400">Aucune carte</p>
         ) : (
           cards.map((card) => <TrelloCard key={card.id} card={card} />)
         )}
@@ -213,7 +213,7 @@ export default function TrelloPage() {
       .get("/trello/boards")
       .then(({ data }) => setBoards(data.data))
       .catch((err) =>
-        setErrorBoards(err.response?.data?.error ?? "Failed to load boards")
+        setErrorBoards(err.response?.data?.error ?? "Impossible de charger les tableaux")
       )
       .finally(() => setLoadingBoards(false));
   }, []);
@@ -233,7 +233,7 @@ export default function TrelloPage() {
       setLists(listsRes.data.data);
       setCards(cardsRes.data.data);
     } catch (err) {
-      setErrorDetail(err.response?.data?.error ?? "Failed to load board detail");
+      setErrorDetail(err.response?.data?.error ?? "Impossible de charger les détails du tableau");
     } finally {
       setLoadingDetail(false);
     }
@@ -267,7 +267,7 @@ export default function TrelloPage() {
                 Trello
               </h3>
               <p className="text-sm text-gray-500">
-                {loadingBoards ? "Loading…" : `${boards.length} board${boards.length !== 1 ? "s" : ""}`}
+                {loadingBoards ? "Chargement…" : `${boards.length} tableau${boards.length !== 1 ? "x" : ""}`}
               </p>
             </div>
           </div>
@@ -283,7 +283,7 @@ export default function TrelloPage() {
         ) : boards.length === 0 ? (
           <Card extra="p-10 flex flex-col items-center gap-3 text-gray-400">
             <SiTrello className="h-10 w-10" />
-            <p className="text-sm">No boards found.</p>
+            <p className="text-sm">Aucun tableau trouvé.</p>
           </Card>
         ) : (
           <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
@@ -307,7 +307,7 @@ export default function TrelloPage() {
             className="flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium text-gray-500 transition-colors hover:bg-lightPrimary hover:text-navy-700 dark:hover:bg-navy-700 dark:hover:text-white"
           >
             <MdArrowBack className="h-4 w-4" />
-            Boards
+            Tableaux
           </button>
           <span className="text-gray-300 dark:text-white/20">/</span>
           <div className="flex items-center gap-2">
@@ -319,7 +319,7 @@ export default function TrelloPage() {
         </div>
         {!loadingDetail && !errorDetail && (
           <p className="text-sm text-gray-500">
-            {lists.length} list{lists.length !== 1 ? "s" : ""} · {cards.length} card{cards.length !== 1 ? "s" : ""}
+            {lists.length} liste{lists.length !== 1 ? "s" : ""} · {cards.length} carte{cards.length !== 1 ? "s" : ""}
           </p>
         )}
       </Card>
@@ -332,7 +332,7 @@ export default function TrelloPage() {
       ) : lists.length === 0 ? (
         <Card extra="p-10 flex flex-col items-center gap-3 text-gray-400">
           <SiTrello className="h-10 w-10" />
-          <p className="text-sm">This board has no lists.</p>
+          <p className="text-sm">Ce tableau ne contient aucune liste.</p>
         </Card>
       ) : (
         <div className="overflow-x-auto pb-4">

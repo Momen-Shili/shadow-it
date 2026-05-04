@@ -1,9 +1,10 @@
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 
-import RtlLayout from "layouts/rtl";
+import RtlLayout   from "layouts/rtl";
 import AdminLayout from "layouts/admin";
-import AuthLayout from "layouts/auth";
+import AuthLayout  from "layouts/auth";
+import Onboarding  from "views/admin/onboarding";
 import { useAuth } from "context/AuthContext";
 
 function PrivateRoute({ children }) {
@@ -15,6 +16,17 @@ const App = () => {
   return (
     <Routes>
       <Route path="auth/*" element={<AuthLayout />} />
+
+      {/* Standalone onboarding — no sidebar/AdminLayout */}
+      <Route
+        path="admin/onboarding"
+        element={
+          <PrivateRoute>
+            <Onboarding />
+          </PrivateRoute>
+        }
+      />
+
       <Route
         path="admin/*"
         element={

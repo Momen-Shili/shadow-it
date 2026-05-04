@@ -1,234 +1,405 @@
-# Shadow IT
+# NexaBoard — Shadow IT Dashboard
 
-A comprehensive platform for discovering and managing shadow IT resources across your organization with OAuth integrations and enterprise tool connectivity.
+Une plateforme full-stack de centralisation opérationnelle qui agrège les données de GitHub, Trello, Slack et Google Drive dans un tableau de bord unifié. Développée dans le cadre d'un Projet de Fin d'Année (PFA) — 3ème année Génie Informatique.
 
-## Overview
+**Auteurs :** Momen Shili & Manef Dakhlaoui
 
-Shadow IT is a full-stack web application designed to help organizations identify, track, and manage unauthorized software and tools being used within their infrastructure. It provides seamless integrations with popular platforms like GitHub, Google, Slack, and Trello while maintaining a secure, user-friendly dashboard.
+---
 
-## Features
+## Aperçu
 
-- **OAuth Authentication**: Secure login 
-- **GitHub Integration**: Connect and manage GitHub repositories and accounts
-- **Google Integration**: Authenticate and access Google Drive
-- **Slack Integration**: Connect Slack workspaces for communication insights
-- **Trello Integration**: Track Trello boards and card activities
-- **Admin Dashboard**: Comprehensive analytics and management interface
-- **Real-time Data Sync**: Keep your shadow IT inventory up-to-date
-- **User Management**: Upcoming
+NexaBoard résout un problème concret dans les équipes de développement modernes : la fragmentation de l'information entre plusieurs outils SaaS. Au lieu de naviguer entre GitHub, Trello, Slack et Google Drive, chaque membre de l'équipe dispose d'un tableau de bord unifié affichant toutes ses données en un seul endroit.
 
-## Screenshots
+Les administrateurs (chefs d'équipe) peuvent superviser tous les membres, approuver ou rejeter les nouveaux comptes, et inspecter le tableau de bord de n'importe quel membre.
 
-### Login Page
+---
+
+## Fonctionnalités
+
+- **Authentification JWT** — Système à double token (accès 15min + rafraîchissement 7 jours) avec renouvellement silencieux automatique
+- **Gestion des rôles** — `team_member` (par défaut) et `admin` (chef d'équipe)
+- **Flux d'approbation des comptes** — Les nouveaux comptes nécessitent l'approbation de l'admin avant de pouvoir se connecter
+- **Clés API par utilisateur** — Chaque membre connecte ses propres comptes GitHub, Trello et Slack
+- **Onboarding guidé** — Configuration étape par étape après approbation du compte
+- **Intégration GitHub** — Profil, dépôts, étoiles, forks, graphique des langages, historique des commits
+- **Intégration Trello** — Tableaux, listes, vue Kanban avec labels et dates d'échéance
+- **Intégration Slack** — Informations sur l'espace de travail, liste des canaux, historique des messages
+- **Intégration Google Drive** — Flux OAuth2, liste des fichiers, quota de stockage
+- **Fil d'Activité Unifié** — Événements mélangés de tous les services triés par date
+- **Statut des Services** — Indicateur temps réel connecté/déconnecté par service
+- **Panneau Admin** — Gestion des membres, approbation/rejet, statistiques équipe, journaux d'activité
+- **Interface entièrement en français** — Toute l'interface utilisateur traduite en français
+- **Branding NexaBoard** — Personnalisation complète du template Horizon UI
+
+---
+
+## Captures d'écran
+
+### Page de Connexion
 ![Login](./images/login.png)
 
-### Main Dashboard
+### Tableau de Bord Principal
 ![Main Dashboard](./images/Main%20Dashboard.png)
 
-### Dark Theme
+### Thème Sombre
 ![Dark Theme](./images/dark-theme.png)
 
-### GitHub Integration
+### Intégration GitHub
 ![GitHub Page](./images/github-page.png)
 
-### Slack Integration
+### Intégration Slack
 ![Slack Page](./images/slack-page.png)
 
-### Trello Integration
+### Intégration Trello
 ![Trello Page](./images/trello-page.png)
 
-### Google Drive Integration
+### Intégration Google Drive
 ![Drive Page](./images/drive-page.png)
 
-### User Profile
+### Profil Utilisateur
 ![Profile Page](./images/profile-page.png)
 
-## Tech Stack
+### Onboarding — Étape 1 (GitHub)
+![Onboarding 1](./images/onboarding-1.png)
+
+### Onboarding — Étape 2 (Trello)
+![Onboarding 2](./images/onboarding-2.png)
+
+### Onboarding — Étape 3 (Slack)
+![Onboarding 3](./images/onboarding-3.png)
+
+### Panneau Administrateur
+![Admin Panel](./images/admin-panel.png)
+
+### Schéma de Base de Données
+![DB Schema](./images/db-schema.png)
+
+---
+
+## Stack Technique
 
 ### Backend
-- **Node.js** with Express.js
-- **SQLite/Database** (configured via migration system)
-- **REST API** architecture
+- **Node.js 20.x** avec **Express.js 4.x**
+- **PostgreSQL 16** via `pg` (node-postgres)
+- **JWT** (jsonwebtoken) — authentification à double token
+- **bcryptjs** — hachage des mots de passe (12 tours de sel)
+- **AES-256-GCM** — chiffrement des clés API et tokens OAuth stockés en base
+- **googleapis** — client OAuth2 pour Google Drive
+- **axios** — appels HTTP serveur vers les APIs externes
+- **helmet** — en-têtes de sécurité HTTP
+- **express-rate-limit** — limitation de débit (100 req/15min global, 10 req/15min auth)
 
 ### Frontend
-- **React.js** (ES6+)
-- **Tailwind CSS** for styling
-- **PostCSS** for CSS processing
-- **Chart.js** for data visualization
-- **React Router** for navigation
+- **React 18.x** avec **React Router 6.x**
+- **Tailwind CSS 3.x** — styling utilitaire
+- **Horizon UI** (template gratuit) — entièrement rebrandé NexaBoard
+- **Axios** — client HTTP avec intercepteurs JWT
+- **ApexCharts** — graphiques en barres et en secteurs dynamiques
+- **React Context** — état d'authentification global
 
-## Project Structure
+### Schéma de Base de Données
+| Table | Rôle |
+|---|---|
+| `users` | Comptes avec rôle, statut (pending/approved/rejected) |
+| `refresh_tokens` | Hachages des tokens de rafraîchissement JWT |
+| `user_api_keys` | Clés GitHub/Trello/Slack chiffrées par utilisateur |
+| `service_credentials` | Tokens OAuth2 Google Drive (AES-256-GCM) |
+| `integrations` | Enregistrements d'intégrations à des fins d'audit |
+| `activity_logs` | Journal des actions admin (approuvé/rejeté/consulté) |
+
+---
+
+## Structure du Projet
 
 ```
 shadow-it/
-├── backend/                    # Express.js server
-│   ├── src/
-│   │   ├── config/            # Database and configuration
-│   │   ├── controllers/       # Request handlers for each service
-│   │   ├── middleware/        # Auth, validation, error handling
-│   │   └── routes/            # API route definitions
-│   ├── server.js              # Entry point
-│   └── package.json
+├── backend/                        # API REST Express.js (port 5000)
+│   ├── server.js                   # Point d'entrée — configuration middleware
+│   ├── .env                        # Variables d'environnement (ne jamais committer)
+│   ├── .env.example                # Template des variables d'environnement
+│   └── src/
+│       ├── config/
+│       │   ├── db.js               # Pool PostgreSQL (max 20 connexions)
+│       │   └── migrate.js          # Création du schéma — exécuter une fois
+│       ├── middleware/
+│       │   ├── auth.js             # verifyToken + requireRole()
+│       │   ├── errorHandler.js     # Gestionnaire d'erreurs global
+│       │   └── validate.js         # Middleware express-validator
+│       ├── controllers/
+│       │   ├── authController.js   # register, login, refresh, logout, me
+│       │   ├── adminController.js  # members, approve, reject, stats, logs
+│       │   ├── apiKeysController.js # save/get/delete clés API par utilisateur
+│       │   ├── githubController.js # profile, repos, commits
+│       │   ├── trelloController.js # boards, lists, cards
+│       │   ├── slackController.js  # workspace, channels, messages
+│       │   └── googleController.js # OAuth2, files, quota
+│       └── routes/
+│           ├── index.js            # Agrège toutes les routes sous /api
+│           ├── auth.js             # /api/auth/*
+│           ├── admin.js            # /api/admin/* (rôle admin uniquement)
+│           ├── apiKeys.js          # /api/keys/*
+│           ├── github.js           # /api/github/*
+│           ├── trello.js           # /api/trello/*
+│           ├── slack.js            # /api/slack/*
+│           └── google.js           # /api/google/*
 │
-├── frontend/                   # React application
-│   ├── public/                # Static files
-│   ├── src/
-│   │   ├── components/        # Reusable UI components
-│   │   ├── views/             # Page components
-│   │   ├── layouts/           # Layout wrappers
-│   │   ├── services/          # API service calls
-│   │   ├── context/           # React context (Auth, etc.)
-│   │   ├── assets/            # Images, styles
-│   │   ├── App.jsx            # Root component
-│   │   └── routes.js          # Route configuration
-│   ├── package.json
-│   └── tailwind.config.js     # Tailwind configuration
-│
-└── README.md                   # This file
+└── frontend/                       # SPA React (port 3000)
+    ├── public/
+    ├── images/                     # Captures d'écran du projet
+    └── src/
+        ├── views/
+        │   ├── auth/
+        │   │   ├── SignIn.jsx       # Page de connexion
+        │   │   └── SignUp.jsx       # Page d'inscription
+        │   └── admin/
+        │       ├── default/        # Tableau de bord principal
+        │       ├── github/         # Page GitHub
+        │       ├── trello/         # Page Trello Kanban
+        │       ├── slack/          # Page messages Slack
+        │       ├── google/         # Page Google Drive
+        │       ├── profile/        # Profil utilisateur
+        │       ├── settings/       # Gestion des clés API
+        │       ├── onboarding/     # Configuration guidée après approbation
+        │       ├── admin-panel/    # Gestion des membres (admin)
+        │       └── 404/            # Page introuvable
+        ├── services/
+        │   ├── api.js              # Client Axios avec intercepteurs JWT
+        │   └── authService.js      # Fonctions login, logout, register
+        ├── context/
+        │   └── AuthContext.js      # État auth global (user, login, logout)
+        ├── components/             # Composants UI partagés (sidebar, navbar...)
+        ├── routes.js               # Config des routes avec labels de section
+        ├── App.jsx                 # PrivateRoute + définitions des routes
+        └── index.js                # Point d'entrée avec AuthProvider
 ```
-### DB Schema
-![DB Schema](./images/db-schema.png)
 
+---
 
 ## Installation
 
-### Prerequisites
-- Node.js (v14 or higher)
-- npm or yarn package manager
+### Prérequis
+
+- Node.js v20.x ou supérieur
+- PostgreSQL 16.x
 - Git
+- Un compte GitHub (pour le Personal Access Token)
+- Un compte Trello (pour la clé API + Token)
+- Un espace de travail Slack (pour le Bot Token)
+- Un projet Google Cloud (pour OAuth2 Drive)
 
-### Backend Setup
+---
 
-1. Navigate to the backend directory:
-   ```bash
-   cd backend
-   ```
+### Configuration du Backend
 
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-
-3. Configure environment variables (create `.env` file):
-   ```
-   PORT=5000
-   NODE_ENV=development
-   DATABASE_URL=sqlite:///shadow-it.db
-   GITHUB_CLIENT_ID=your_github_client_id
-   GITHUB_CLIENT_SECRET=your_github_client_secret
-   GOOGLE_CLIENT_ID=your_google_client_id
-   GOOGLE_CLIENT_SECRET=your_google_client_secret
-   SLACK_TOKEN=your_slack_token
-   TRELLO_KEY=your_trello_key
-   TRELLO_TOKEN=your_trello_token
-   ```
-
-4. Run database migrations:
-   ```bash
-   npm run db:migrate
-   ```
-
-### Frontend Setup
-
-1. Navigate to the frontend directory:
-   ```bash
-   cd frontend
-   ```
-
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-
-3. Configure environment variables (create `.env` file):
-   ```
-   REACT_APP_API_URL=http://localhost:5000
-   REACT_APP_GITHUB_CLIENT_ID=your_github_client_id
-   REACT_APP_GOOGLE_CLIENT_ID=your_google_client_id
-   ```
-
-## Running the Application
-
-### Development Mode
-
-**Backend:**
+**1. Naviguer vers le dossier backend :**
 ```bash
 cd backend
-npm start
 ```
-The server will run on `http://localhost:5000`
 
-**Frontend:**
+**2. Installer les dépendances :**
 ```bash
-cd frontend
-npm start
+npm install
 ```
-The application will open on `http://localhost:3000`
 
-
-## API Endpoints
-
-### Authentication
-- `POST /api/auth/login` - User login
-- `POST /api/auth/logout` - User logout
-- `GET /api/auth/profile` - Get current user profile
-- `GET /api/auth/github` - GitHub OAuth callback
-- `GET /api/auth/google` - Google OAuth callback
-
-### Integrations
-- `GET /api/integrations` - List all integrations
-- `POST /api/integrations/github` - Connect GitHub account
-- `POST /api/integrations/google` - Connect Google account
-- `POST /api/integrations/slack` - Connect Slack workspace
-- `POST /api/integrations/trello` - Connect Trello account
-
-### GitHub
-- `GET /api/github/repos` - List repositories
-- `GET /api/github/user` - Get user info
-
-### Google
-- `GET /api/google/profile` - Get Google profile
-
-### Slack
-- `GET /api/slack/workspaces` - List workspaces
-- `GET /api/slack/channels` - List channels
-
-### Trello
-- `GET /api/trello/boards` - List boards
-- `GET /api/trello/cards` - List cards
-
-## Environment Variables
-
-The application requires the following environment variables to function properly. Set them in `.env` files in both backend and frontend directories.
-
-### Backend (.env)
+**3. Créer le fichier d'environnement :**
+```bash
+copy .env.example .env      # Windows
+cp .env.example .env        # Mac/Linux
 ```
+
+**4. Remplir le `.env` :**
+```env
+# Serveur
 PORT=5000
 NODE_ENV=development
-DATABASE_URL=sqlite:///shadow-it.db
-GITHUB_CLIENT_ID=
-GITHUB_CLIENT_SECRET=
-GOOGLE_CLIENT_ID=
-GOOGLE_CLIENT_SECRET=
-SLACK_TOKEN=
-TRELLO_KEY=
-TRELLO_TOKEN=
-JWT_SECRET=your_jwt_secret_key
+
+# PostgreSQL
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=shadow_it_db
+DB_USER=postgres
+DB_PASSWORD=votre_mot_de_passe
+
+# JWT
+JWT_SECRET=votre_clé_secrète_jwt_min_32_chars
+JWT_EXPIRES_IN=15m
+JWT_REFRESH_SECRET=votre_clé_refresh_secrète_min_32_chars
+JWT_REFRESH_EXPIRES_IN=7d
+
+# Chiffrement (pour les clés API stockées en DB)
+ENCRYPTION_KEY=votre_clé_hex_64_caractères
+
+# CORS
+CLIENT_URL=http://localhost:3000
+
+# Google OAuth2 (Drive)
+GOOGLE_CLIENT_ID=votre_client_id.apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET=votre_client_secret
+GOOGLE_REDIRECT_URI=http://localhost:5000/api/google/callback
 ```
 
-### Frontend (.env)
+> **Note :** Les tokens GitHub, Trello et Slack sont maintenant stockés par utilisateur en base de données. Inutile de les mettre dans le `.env`.
+
+**5. Créer la base de données :**
+```bash
+psql -U postgres -c "CREATE DATABASE shadow_it_db;"
 ```
-REACT_APP_API_URL=http://localhost:5000
-REACT_APP_GITHUB_CLIENT_ID=
-REACT_APP_GOOGLE_CLIENT_ID=
+
+**6. Lancer les migrations :**
+```bash
+npm run db:migrate
 ```
 
-## Security Considerations
+**7. Créer le premier administrateur manuellement :**
+```sql
+-- D'abord s'inscrire via l'API, puis promouvoir en admin :
+UPDATE users SET role = 'admin', status = 'approved' WHERE email = 'votre@email.com';
+```
 
-- All API endpoints require authentication via JWT tokens
-- OAuth credentials are securely stored and never exposed to the frontend
-- Environment variables containing secrets should never be committed to version control
-- Use HTTPS in production environments
-- Implement rate limiting for API endpoints
-- Validate and sanitize all user inputs
+**8. Démarrer le backend :**
+```bash
+npm run dev
+```
+Serveur disponible sur `http://localhost:5000`
 
+---
+
+### Configuration du Frontend
+
+**1. Naviguer vers le dossier frontend :**
+```bash
+cd frontend
+```
+
+**2. Installer les dépendances :**
+```bash
+npm install
+```
+
+**3. Démarrer le frontend :**
+```bash
+npm start
+```
+Application disponible sur `http://localhost:3000`
+
+---
+
+## Flux Utilisateur
+
+### Nouveau Membre
+1. Aller sur `/auth/sign-up` → créer un compte
+2. Voir le message : *"Votre compte est en attente d'approbation par un administrateur"*
+3. L'admin approuve le compte
+4. Connexion → redirigé vers l'**Onboarding** → ajouter les clés GitHub/Trello/Slack
+5. Accès au tableau de bord complet avec ses propres données
+
+### Administrateur (Chef d'Équipe)
+1. Se connecter avec le compte admin
+2. Accéder au **Panneau Admin** → voir les membres en attente
+3. Approuver ou rejeter les membres
+4. Consulter le tableau de bord de n'importe quel membre
+5. Voir les statistiques équipe et les journaux d'activité
+
+---
+
+## Endpoints API
+
+### Authentification (`/api/auth`)
+| Méthode | Endpoint | Auth | Description |
+|---|---|---|---|
+| POST | `/api/auth/register` | Aucune | Créer un compte (statut : pending) |
+| POST | `/api/auth/login` | Aucune | Connexion (bloquée si pending/rejected) |
+| POST | `/api/auth/refresh` | Aucune | Rafraîchir le token d'accès |
+| POST | `/api/auth/logout` | Aucune | Invalider le token de rafraîchissement |
+| GET | `/api/auth/me` | JWT | Profil de l'utilisateur connecté |
+
+### Admin (`/api/admin`) — Rôle admin uniquement
+| Méthode | Endpoint | Description |
+|---|---|---|
+| GET | `/api/admin/members` | Liste tous les membres avec leur statut |
+| PATCH | `/api/admin/members/:id/approve` | Approuver un membre en attente |
+| PATCH | `/api/admin/members/:id/reject` | Rejeter un membre (définitif) |
+| GET | `/api/admin/members/:id/dashboard` | Voir le tableau de bord d'un membre |
+| GET | `/api/admin/stats` | Statistiques de l'équipe |
+| GET | `/api/admin/logs` | Journaux d'activité (50 dernières actions) |
+
+### Clés API (`/api/keys`) — JWT requis
+| Méthode | Endpoint | Description |
+|---|---|---|
+| GET | `/api/keys` | Vérifier quelles clés sont configurées (booléens) |
+| POST | `/api/keys` | Sauvegarder/mettre à jour les clés GitHub/Trello/Slack |
+| DELETE | `/api/keys/:service` | Supprimer la clé d'un service spécifique |
+
+### GitHub (`/api/github`) — JWT + clé configurée
+| Méthode | Endpoint | Description |
+|---|---|---|
+| GET | `/api/github/profile` | Profil GitHub de l'utilisateur |
+| GET | `/api/github/repos` | Dépôts avec étoiles, forks, langage |
+| GET | `/api/github/commits` | Commits récents |
+
+### Trello (`/api/trello`) — JWT + clé configurée
+| Méthode | Endpoint | Description |
+|---|---|---|
+| GET | `/api/trello/boards` | Tous les tableaux |
+| GET | `/api/trello/boards/:id/lists` | Listes d'un tableau |
+| GET | `/api/trello/boards/:id/cards` | Cartes d'un tableau |
+
+### Slack (`/api/slack`) — JWT + clé configurée
+| Méthode | Endpoint | Description |
+|---|---|---|
+| GET | `/api/slack/workspace` | Informations sur l'espace de travail |
+| GET | `/api/slack/channels` | Canaux publics |
+| GET | `/api/slack/channels/:id/messages` | 20 derniers messages |
+
+### Google Drive (`/api/google`) — OAuth2
+| Méthode | Endpoint | Description |
+|---|---|---|
+| GET | `/api/google/auth` | Générer l'URL de consentement OAuth2 |
+| GET | `/api/google/callback` | Gérer le callback OAuth2 |
+| GET | `/api/google/files` | Fichiers récents |
+| GET | `/api/google/quota` | Quota de stockage |
+
+---
+
+## Sécurité
+
+- **Mots de passe** — bcryptjs avec 12 tours de sel, jamais stockés en clair
+- **JWT** — HS256, token d'accès 15min, token de rafraîchissement 7 jours
+- **Clés API** — Chiffrées AES-256-GCM en base, jamais retournées en clair au frontend
+- **Tokens Google** — Chiffrés AES-256-GCM par utilisateur dans `service_credentials`
+- **Rate Limiting** — 100 req/15min global, 10 req/15min sur les routes auth
+- **CORS** — Seul `http://localhost:3000` autorisé
+- **Helmet** — CSP, HSTS, X-Frame-Options, protection XSS
+- **Validation** — express-validator sur toutes les routes POST/PATCH
+- **Guards de rôle** — Les routes admin exigent `role = 'admin'` côté serveur
+- **Guards de statut** — Connexion bloquée côté serveur pour les comptes `pending` et `rejected`
+
+---
+
+## Variables d'Environnement
+
+### Backend `.env`
+
+| Variable | Requis | Description |
+|---|---|---|
+| `PORT` | Oui | Port du serveur (défaut : 5000) |
+| `DB_HOST` | Oui | Hôte PostgreSQL |
+| `DB_NAME` | Oui | Nom de la base de données |
+| `DB_USER` | Oui | Utilisateur de la base de données |
+| `DB_PASSWORD` | Oui | Mot de passe de la base de données |
+| `JWT_SECRET` | Oui | Clé secrète du token d'accès (32+ chars) |
+| `JWT_REFRESH_SECRET` | Oui | Clé secrète du token de rafraîchissement (32+ chars) |
+| `ENCRYPTION_KEY` | Oui | Clé AES-256 pour chiffrer les clés API (64 chars hex) |
+| `CLIENT_URL` | Oui | URL du frontend pour CORS |
+| `GOOGLE_CLIENT_ID` | Oui | Client ID OAuth2 Google |
+| `GOOGLE_CLIENT_SECRET` | Oui | Secret client OAuth2 Google |
+| `GOOGLE_REDIRECT_URI` | Oui | URL de callback OAuth2 Google |
+
+> Les identifiants GitHub, Trello et Slack sont stockés par utilisateur en base de données — pas dans le `.env`.
+
+---
+
+## Licence
+
+Ce projet a été développé dans le cadre d'un PFA académique.
+**Auteurs :** Momen Shili & Manef Dakhlaoui — 2025/2026

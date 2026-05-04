@@ -11,12 +11,13 @@ function formatTime(isoStr) {
   const now = new Date();
   const diffMs = now - d;
   const diffMins = Math.floor(diffMs / 60000);
-  if (diffMins < 1) return "just now";
-  if (diffMins < 60) return `${diffMins}m ago`;
+  if (diffMins < 1) return "à l'instant";
+  if (diffMins < 60) return `${diffMins}m`;
   const diffHours = Math.floor(diffMins / 60);
-  if (diffHours < 24) return `${diffHours}h ago`;
+  if (diffHours < 24) return `${diffHours}h`;
   return d.toLocaleDateString(undefined, { month: "short", day: "numeric" });
 }
+
 
 function formatFullTime(isoStr) {
   if (!isoStr) return "";
@@ -86,10 +87,10 @@ function ChannelRow({ channel, isSelected, onClick }) {
 }
 
 function formatUserId(userId) {
-  if (!userId) return "Unknown";
+  if (!userId) return "Inconnu";
   // Slack user IDs look like U012AB3CD — show last 4 chars as a short handle
   if (userId.startsWith("U") && userId.length > 4) {
-    return `Member ·${userId.slice(-4)}`;
+    return `Membre ·${userId.slice(-4)}`;
   }
   return userId;
 }
@@ -144,7 +145,7 @@ function MessageBubble({ message }) {
       {/* Reply count */}
       {message.reply_count > 0 && (
         <p className="mt-1 pl-9 text-[11px] font-medium text-brand-500">
-          {message.reply_count} {message.reply_count === 1 ? "reply" : "replies"}
+          {message.reply_count} {message.reply_count === 1 ? "réponse" : "réponses"}
         </p>
       )}
     </div>
@@ -296,7 +297,7 @@ export default function SlackPage() {
             </div>
             {!loadingChannels && !errorChannels && (
               <span className="ml-auto rounded-full bg-lightPrimary px-3 py-1 text-xs font-semibold text-navy-700 dark:bg-navy-700 dark:text-white">
-                {channels.length} channel{channels.length !== 1 ? "s" : ""}
+                {channels.length} {channels.length === 1 ? "canal" : "canaux"}
               </span>
             )}
           </div>
@@ -309,13 +310,13 @@ export default function SlackPage() {
         {/* Left: Channels list */}
         <Card extra="p-4 lg:w-72 xl:w-80 shrink-0 flex flex-col gap-3">
           <h4 className="text-sm font-bold text-navy-700 dark:text-white">
-            Channels
+            Canaux
           </h4>
 
           {/* Search */}
           <input
             type="text"
-            placeholder="Search channels…"
+            placeholder="Rechercher les canaux…"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="h-9 w-full rounded-xl border border-gray-200 bg-white/0 px-3 text-sm outline-none placeholder:text-gray-400 focus:border-brand-500 dark:border-white/10 dark:text-white dark:placeholder:text-gray-500"
@@ -328,7 +329,7 @@ export default function SlackPage() {
               <ErrorBanner message={errorChannels} />
             ) : filteredChannels.length === 0 ? (
               <p className="px-3 py-2 text-xs italic text-gray-400">
-                {search ? "No channels match your search." : "No channels found."}
+                {search ? "Aucun canal ne correspond à votre recherche." : "Aucun canal trouvé."}
               </p>
             ) : (
               filteredChannels.map((ch) => (
@@ -378,7 +379,7 @@ export default function SlackPage() {
             {!selectedChannel ? (
               <div className="flex flex-1 flex-col items-center justify-center gap-3 py-16 text-gray-300 dark:text-gray-600">
                 <SiSlack className="h-12 w-12" />
-                <p className="text-sm">Pick a channel from the left to see messages</p>
+                <p className="text-sm">Choisissez un canal à gauche pour voir les messages</p>
               </div>
             ) : loadingMessages ? (
               Array.from({ length: 5 }).map((_, i) => <MessageSkeleton key={i} />)
@@ -387,7 +388,7 @@ export default function SlackPage() {
             ) : messages.length === 0 ? (
               <div className="flex flex-col items-center gap-3 py-16 text-gray-300 dark:text-gray-600">
                 <MdTag className="h-10 w-10" />
-                <p className="text-sm">No messages in this channel.</p>
+                <p className="text-sm">Aucun message dans ce canal.</p>
               </div>
             ) : (
               <>

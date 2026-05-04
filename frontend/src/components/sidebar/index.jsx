@@ -4,9 +4,7 @@ import { Link, useLocation } from "react-router-dom";
 import { MdDashboard } from "react-icons/md";
 import DashIcon from "components/icons/DashIcon";
 import routes from "routes.js";
-
-const mainRoutes    = routes.filter((r) => r.layout === "/admin" && r.section === "main");
-const settingsRoutes = routes.filter((r) => r.layout === "/admin" && r.section === "settings");
+import { useAuth } from "context/AuthContext";
 
 function NavLink({ route }) {
   const location = useLocation();
@@ -39,6 +37,12 @@ function SectionLabel({ label }) {
 }
 
 const Sidebar = ({ open, onClose }) => {
+  const { user } = useAuth();
+
+  const mainRoutes     = routes.filter((r) => r.layout === "/admin" && r.section === "main");
+  const settingsRoutes = routes.filter((r) => r.layout === "/admin" && r.section === "settings");
+  const adminRoutes    = routes.filter((r) => r.layout === "/admin" && r.section === "admin");
+
   return (
     <div
       className={`sm:none duration-175 linear fixed !z-50 flex min-h-full flex-col bg-white pb-10 shadow-2xl shadow-white/5 transition-all dark:!bg-navy-800 dark:text-white md:!z-50 lg:!z-50 xl:!z-0 ${
@@ -66,14 +70,24 @@ const Sidebar = ({ open, onClose }) => {
 
       {/* ── Navigation ── */}
       <ul className="mb-auto pt-1">
-        <SectionLabel label="Main Menu" />
+        <SectionLabel label="Menu principal" />
         {mainRoutes.map((route, i) => (
           <NavLink key={i} route={route} />
         ))}
-        <SectionLabel label="Settings" />
+
+        <SectionLabel label="Paramètres" />
         {settingsRoutes.map((route, i) => (
           <NavLink key={i} route={route} />
         ))}
+
+        {user?.role === "admin" && adminRoutes.length > 0 && (
+          <>
+            <SectionLabel label="Administration" />
+            {adminRoutes.map((route, i) => (
+              <NavLink key={i} route={route} />
+            ))}
+          </>
+        )}
       </ul>
     </div>
   );

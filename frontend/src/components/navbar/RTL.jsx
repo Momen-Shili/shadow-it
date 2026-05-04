@@ -48,13 +48,13 @@ const Navbar = (props) => {
       </div>
 
       <div className="relative mt-[3px] flex h-[61px] w-[355px] flex-grow items-center justify-around gap-2 rounded-full bg-white px-2 py-2 shadow-xl shadow-shadow-500 dark:!bg-navy-800 dark:shadow-none md:w-[365px] md:flex-grow-0 md:gap-1 xl:w-[365px] xl:gap-2">
-        <div className="flex h-full items-center rounded-full bg-lightPrimary text-navy-700 dark:bg-navy-900 dark:text-white xl:w-[225px]">
+          <div className="flex h-full items-center rounded-full bg-lightPrimary text-navy-700 dark:bg-navy-900 dark:text-white xl:w-[225px]">
           <p className="text-xl pe-2 ps-3">
             <FiSearch className="h-4 w-4 text-gray-400 dark:text-white" />
           </p>
           <input
             type="text"
-            placeholder="Search..."
+            placeholder="Rechercher..."
             class="block h-full w-full rounded-full bg-lightPrimary text-sm font-medium text-navy-700 outline-none placeholder:!text-gray-400 dark:bg-navy-900 dark:text-white dark:placeholder:!text-white sm:w-fit"
           />
         </div>
@@ -76,10 +76,10 @@ const Navbar = (props) => {
             <div className="flex w-[360px] flex-col gap-3 rounded-[20px] bg-white p-4 shadow-xl shadow-shadow-500 dark:!bg-navy-700 dark:text-white dark:shadow-none sm:w-[460px]">
               <div className="flex items-center justify-between">
                 <p className="text-base font-bold text-navy-700 dark:text-white">
-                  Notification
+                  Notifications
                 </p>
                 <p className="text-sm font-bold text-navy-700 dark:text-white">
-                  Mark all read
+                  Marquer tout comme lu
                 </p>
               </div>
 
@@ -89,10 +89,10 @@ const Navbar = (props) => {
                 </div>
                 <div className="flex h-full w-full flex-col justify-center rounded-lg px-1 text-sm ms-2">
                   <p className="mb-1 text-base font-bold text-gray-900 text-start dark:text-white">
-                    New Update: Horizon UI Dashboard PRO
+                    Nouvelle mise à jour : Horizon UI Dashboard PRO
                   </p>
                   <p className="font-base text-xs text-gray-900 text-start dark:text-white">
-                    A new update for your downloaded item is available!
+                    Une nouvelle mise à jour pour votre élément téléchargé est disponible !
                   </p>
                 </div>
               </button>
@@ -103,10 +103,10 @@ const Navbar = (props) => {
                 </div>
                 <div className="flex h-full w-full flex-col justify-center rounded-lg px-1 text-sm ms-2">
                   <p className="mb-1 text-base font-bold text-gray-900 text-start dark:text-white">
-                    New Update: Horizon UI Dashboard PRO
+                    Nouvelle mise à jour : Horizon UI Dashboard PRO
                   </p>
                   <p className="font-base text-xs text-gray-900 text-start dark:text-white">
-                    A new update for your downloaded item is available!
+                    Une nouvelle mise à jour pour votre élément téléchargé est disponible !
                   </p>
                 </div>
               </button>
@@ -186,11 +186,11 @@ const Navbar = (props) => {
           }
           children={
             <div className="flex w-56 flex-col justify-start rounded-[20px] bg-white bg-cover bg-no-repeat shadow-xl shadow-shadow-500 dark:!bg-navy-700 dark:text-white dark:shadow-none">
-              <div className="p-4">
+                <div className="p-4">
                 <div className="flex items-center gap-2">
                   <p className="text-sm font-bold text-navy-700 dark:text-white">
-                    👋 Hey, Adela
-                  </p>{" "}
+                    👋 Salut, Adela
+                  </p>
                 </div>
               </div>
               <div className="h-px w-full bg-gray-200 dark:bg-white/20 " />
@@ -200,19 +200,19 @@ const Navbar = (props) => {
                   href=" "
                   className="text-sm text-gray-800 dark:text-white hover:dark:text-white"
                 >
-                  Profile Settings
+                  Paramètres du profil
                 </a>
                 <a
                   href=" "
                   className="mt-3 text-sm text-gray-800 dark:text-white hover:dark:text-white"
                 >
-                  Newsletter Settings
+                  Paramètres de la newsletter
                 </a>
                 <a
                   href=" "
                   className="mt-3 text-sm font-medium text-red-500 hover:text-red-500 transition duration-150 ease-out hover:ease-in"
                 >
-                  Log Out
+                  Se déconnecter
                 </a>
               </div>
             </div>

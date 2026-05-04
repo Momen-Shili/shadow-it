@@ -4,13 +4,14 @@ import {
   logout as logoutService,
   getCurrentUser,
 } from '../services/authService';
+import api from '../services/api';
 
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(getCurrentUser);
+  const [user, setUser]       = useState(getCurrentUser);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError]     = useState(null);
 
   async function login(email, password) {
     setLoading(true);
@@ -18,9 +19,21 @@ export function AuthProvider({ children }) {
     try {
       const data = await loginService(email, password);
       setUser(data.user);
-      return data;
+
+      // Determine whether onboarding is needed
+      let needsOnboarding = false;
+      try {
+        const { data: keysData } = await api.get('/keys');
+        const k = keysData.data;
+        needsOnboarding = !k.has_github && !k.has_trello && !k.has_slack;
+      } catch {
+        // If the keys check fails (e.g. network), don't block login
+        needsOnboarding = false;
+      }
+
+      return { ...data, needsOnboarding };
     } catch (err) {
-      const message = err.response?.data?.error || 'Login failed. Please try again.';
+      const message = err.response?.data?.error || 'Échec de la connexion. Veuillez réessayer.';
       setError(message);
       throw err;
     } finally {

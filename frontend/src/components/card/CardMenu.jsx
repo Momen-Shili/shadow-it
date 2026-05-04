@@ -32,25 +32,25 @@ function CardMenu(props) {
             <span>
               <AiOutlineUser />
             </span>
-            Panel 1
+            Panneau 1
           </p>
           <p className="hover:text-black mt-2 flex cursor-pointer items-center gap-2 pt-1 text-gray-600 hover:font-medium">
             <span>
               <AiOutlineShop />
             </span>
-            Panel 2
+            Panneau 2
           </p>
           <p className="hover:text-black mt-2 flex cursor-pointer items-center gap-2 pt-1 text-gray-600 hover:font-medium">
             <span>
               <TiLightbulb />
             </span>
-            Panel 3
+            Panneau 3
           </p>
           <p className="hover:text-black mt-2 flex cursor-pointer items-center gap-2 pt-1 text-gray-600 hover:font-medium">
             <span>
               <FiSettings />
             </span>
-            Panel 4
+            Panneau 4
           </p>
         </div>
       }

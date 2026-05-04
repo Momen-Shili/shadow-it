@@ -98,7 +98,7 @@ const Navbar = (props) => {
             <div className="flex w-56 flex-col justify-start rounded-[20px] bg-white bg-cover bg-no-repeat shadow-xl shadow-shadow-500 dark:!bg-navy-700 dark:text-white dark:shadow-none">
               <div className="p-4">
                 <p className="text-sm font-bold text-navy-700 dark:text-white">
-                  👋 Hey, {firstName}
+                  👋 Salut, {firstName}
                 </p>
                 <p className="mt-0.5 truncate text-xs text-gray-500 dark:text-gray-400">
                   {user?.email}
@@ -110,13 +110,13 @@ const Navbar = (props) => {
                   to="/admin/profile"
                   className="text-sm text-gray-800 dark:text-white hover:text-brand-500 dark:hover:text-brand-400"
                 >
-                  Profile Settings
+                  Paramètres du profil
                 </Link>
                 <button
                   onClick={handleLogout}
                   className="mt-3 text-left text-sm font-medium text-red-500 transition duration-150 ease-out hover:text-red-600 hover:ease-in"
                 >
-                  Log Out
+                  Se déconnecter
                 </button>
               </div>
             </div>

@@ -13,17 +13,17 @@ export default function NotFound() {
           404
         </h1>
         <p className="text-xl font-semibold text-navy-700 dark:text-white">
-          Page not found
+          Page introuvable
         </p>
         <p className="max-w-xs text-sm text-gray-500">
-          The page you're looking for doesn't exist or has been moved.
+          La page que vous cherchez n'existe pas ou a été déplacée.
         </p>
       </div>
       <button
         onClick={() => navigate("/admin/default")}
         className="rounded-xl bg-brand-500 px-8 py-3 text-sm font-semibold text-white transition hover:bg-brand-600 active:bg-brand-700"
       >
-        Back to Dashboard
+        Retour au tableau de bord
       </button>
     </div>
   );

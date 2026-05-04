@@ -98,7 +98,7 @@ function ConnectedServices({ health, loadingHealth }) {
   return (
     <Card extra="w-full h-full p-5 flex flex-col gap-4">
       <h4 className="text-xl font-bold text-navy-700 dark:text-white">
-        Connected Services
+        Services connectés
       </h4>
       <div className="flex flex-col gap-3">
         {SERVICES.map(({ key, label, icon, color }) => (
@@ -120,11 +120,11 @@ function ConnectedServices({ health, loadingHealth }) {
               <div className="h-5 w-20 animate-pulse rounded-full bg-gray-200 dark:bg-navy-600" />
             ) : health[key] ? (
               <span className="flex items-center gap-1.5 rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700 dark:bg-green-900/30 dark:text-green-400">
-                <MdCircle className="h-2 w-2" /> Connected
+                <MdCircle className="h-2 w-2" /> Connecté
               </span>
             ) : (
               <span className="flex items-center gap-1.5 rounded-full bg-red-100 px-3 py-1 text-xs font-semibold text-red-600 dark:bg-red-900/30 dark:text-red-400">
-                <MdCircle className="h-2 w-2" /> Disconnected
+                <MdCircle className="h-2 w-2" /> Déconnecté
               </span>
             )}
           </div>
@@ -179,10 +179,10 @@ function ConnectedServicesDetails({ serviceStats, loadingStats }) {
     <Card extra="w-full h-full p-5">
       <div className="mb-6">
         <h4 className="text-xl font-bold text-navy-700 dark:text-white">
-          Connected Services Details
+          Détails des services connectés
         </h4>
         <p className="mt-1 text-sm text-gray-500">
-          Live stats pulled from each connected service.
+          Statistiques en temps réel récupérées depuis chaque service connecté.
         </p>
       </div>
       <div className="flex flex-col gap-3">
@@ -206,7 +206,7 @@ function ConnectedServicesDetails({ serviceStats, loadingStats }) {
                 <p className="mt-0.5 text-xs text-gray-500">{description}</p>
               ) : (
                 <p className="mt-0.5 text-xs italic text-gray-400">
-                  Not connected
+                  Non connecté
                 </p>
               )}
             </div>
@@ -226,25 +226,25 @@ function ActivitySummary({ serviceStats, loadingStats }) {
     {
       icon: <FaGithub className="h-6 w-6" />,
       bg: "bg-gray-800",
-      label: "GitHub Repos",
+      label: "Dépôts GitHub",
       value: serviceStats.github?.repos,
     },
     {
       icon: <FaStar className="h-6 w-6" />,
       bg: "bg-yellow-400",
-      label: "Total Stars",
+      label: "Étoiles totales",
       value: serviceStats.github?.stars,
     },
     {
       icon: <SiTrello className="h-6 w-6" />,
       bg: "bg-blue-500",
-      label: "Trello Boards",
+      label: "Tableaux Trello",
       value: serviceStats.trello?.boards,
     },
     {
       icon: <SiSlack className="h-6 w-6" />,
       bg: "bg-[#E01E5A]",
-      label: "Slack Channels",
+      label: "Canaux Slack",
       value: serviceStats.slack?.channels,
     },
   ];
@@ -253,10 +253,10 @@ function ActivitySummary({ serviceStats, loadingStats }) {
     <Card extra="w-full p-5">
       <div className="mb-5">
         <h4 className="text-xl font-bold text-navy-700 dark:text-white">
-          Activity Summary
+          Résumé d'activité
         </h4>
         <p className="mt-1 text-sm text-gray-500">
-          Aggregated totals across all connected services.
+          Totaux agrégés sur l'ensemble des services connectés.
         </p>
       </div>
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">

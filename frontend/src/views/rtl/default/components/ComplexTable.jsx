@@ -20,10 +20,10 @@ export default function ComplexTable(props) {
   const [sorting, setSorting] = React.useState([]);
   let defaultData = tableData;
   const columns = [
-    columnHelper.accessor("name", {
+      columnHelper.accessor("name", {
       id: "name",
       header: () => (
-        <p className="text-sm font-bold text-gray-600 dark:text-white">NAME</p>
+        <p className="text-sm font-bold text-gray-600 dark:text-white">NOM</p>
       ),
       cell: (info) => (
         <p className="text-sm font-bold text-navy-700 dark:text-white">
@@ -31,11 +31,11 @@ export default function ComplexTable(props) {
         </p>
       ),
     }),
-    columnHelper.accessor("status", {
+      columnHelper.accessor("status", {
       id: "status",
       header: () => (
         <p className="text-sm font-bold text-gray-600 dark:text-white">
-          STATUS
+          STATUT
         </p>
       ),
       cell: (info) => (
@@ -48,7 +48,7 @@ export default function ComplexTable(props) {
             <MdOutlineError className="text-amber-500 me-1 dark:text-amber-300" />
           ) : null}
           <p className="text-sm font-bold text-navy-700 dark:text-white">
-            {info.getValue()}
+            {info.getValue() === "Approved" ? "Approuvé" : info.getValue() === "Disable" ? "Désactivé" : info.getValue() === "Error" ? "Erreur" : info.getValue()}
           </p>
         </div>
       ),
@@ -64,11 +64,11 @@ export default function ComplexTable(props) {
         </p>
       ),
     }),
-    columnHelper.accessor("progress", {
+      columnHelper.accessor("progress", {
       id: "progress",
       header: () => (
         <p className="text-sm font-bold text-gray-600 dark:text-white">
-          PROGRESS
+          PROGRESSION
         </p>
       ),
       cell: (info) => (

@@ -16,7 +16,10 @@ function signRefresh(payload) {
 
 async function register(req, res, next) {
   try {
-    const { name, email, password, role = 'analyst' } = req.body;
+    const { name, email, password } = req.body;
+    // role is always team_member on self-registration; status starts as pending
+    const role = 'team_member';
+    const status = 'pending';
 
     const exists = await pool.query('SELECT id FROM users WHERE email = $1', [email]);
     if (exists.rows.length) {
@@ -25,10 +28,10 @@ async function register(req, res, next) {
 
     const hash = await bcrypt.hash(password, 12);
     const { rows } = await pool.query(
-      `INSERT INTO users (name, email, password, role)
-       VALUES ($1, $2, $3, $4)
-       RETURNING id, name, email, role, created_at`,
-      [name, email, hash, role]
+      `INSERT INTO users (name, email, password, role, status)
+       VALUES ($1, $2, $3, $4, $5)
+       RETURNING id, name, email, role, status, created_at`,
+      [name, email, hash, role, status]
     );
 
     res.status(201).json({ user: rows[0] });
@@ -42,7 +45,7 @@ async function login(req, res, next) {
     const { email, password } = req.body;
 
     const { rows } = await pool.query(
-      'SELECT id, name, email, password, role, is_active FROM users WHERE email = $1',
+      'SELECT id, name, email, password, role, status, is_active FROM users WHERE email = $1',
       [email]
     );
 
@@ -52,6 +55,16 @@ async function login(req, res, next) {
     }
     if (!user.is_active) {
       return res.status(403).json({ error: 'Account disabled' });
+    }
+    if (user.status === 'pending') {
+      return res.status(403).json({
+        error: "Votre compte est en attente d'approbation par un administrateur.",
+      });
+    }
+    if (user.status === 'rejected') {
+      return res.status(403).json({
+        error: 'Votre compte a été rejeté. Contactez votre administrateur.',
+      });
     }
 
     const payload = { id: user.id, role: user.role };
@@ -120,7 +133,7 @@ async function logout(req, res, next) {
 async function me(req, res, next) {
   try {
     const { rows } = await pool.query(
-      'SELECT id, name, email, role, created_at FROM users WHERE id = $1',
+      'SELECT id, name, email, role, status, created_at FROM users WHERE id = $1',
       [req.user.id]
     );
     if (!rows.length) return res.status(404).json({ error: 'User not found' });

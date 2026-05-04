@@ -9,7 +9,7 @@ export default function RTL(props) {
   const { ...rest } = props;
   const location = useLocation();
   const [open, setOpen] = React.useState(true);
-  const [currentRoute, setCurrentRoute] = React.useState("Main Dashboard");
+  const [currentRoute, setCurrentRoute] = React.useState("Tableau de bord");
 
   React.useEffect(() => {
     window.addEventListener("resize", () =>
